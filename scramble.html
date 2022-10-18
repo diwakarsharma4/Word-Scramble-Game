@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body{
+                background-image: linear-gradient(180deg, #2ed590, #7bed9f);
+            }
+
+            h1{
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                text-align: center;
+                color: white;
+                font-size: 1.8rem;
+                letter-spacing: 15px;
+            }
+
+            h2{
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                text-align: center;
+                color: white;
+            }
+
+            h3{
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                color: white;
+                text-align: center;
+                font-size: 1.5rem;
+            }
+
+            .section{
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .area{
+                margin-top: 150px;
+                width: 50%;
+                height: 400px;
+                padding: 20px 0;
+                background-color: #2ed573;
+                display: flex;
+                flex-direction: column;
+                /* justify-content: center; */
+                align-items: center;
+                border-radius: 10px;
+                box-shadow: 0px 0px 15px 15px #2ed573;
+            }
+
+            .header{
+                margin-top: 50px;
+                background-color: inherit;
+            }
+
+            input{
+                width: 40%;
+                padding: 15px 0;
+                text-align: center;
+                border-radius: 25px;
+                outline: none;
+                border: none;
+                background-color: #dff9fb;
+                color: #2ed590;
+                margin: 2rem 0;
+                font-size: 1.1rem;
+                box-shadow: 0rem 0rem 5px 5px gray;
+            }
+
+            .msg1{
+                padding: 25px 0;
+                border-radius: 10px;
+                background-color: #2ed573;
+                box-shadow: 0px 0px 15px 15px #2ed573;
+            }
+
+            button{
+                font-size: 1rem;
+                cursor: pointer;
+                outline: none;
+                border: #2f3542;
+                text-decoration: none;
+                margin-top: 10px;
+                color: #2ed590;
+                border-radius: 10px;
+                box-shadow: 0rem 0rem 5px 5px gray;
+            }
+
+            button.btn{
+                font-weight: 600;
+                padding: 1rem 2rem;
+                background: white;
+                text-transform: uppercase;
+                transition-property: all;
+                transition-duration: 0.5s;
+                transition-timing-function: cubic-bezier(0.65, 0.25, 0.25, 1.95);
+            }
+
+            button.btn:hover, button.btn:focus, button.btn:active{
+                letter-spacing: 0.125rem;
+                word-spacing: 00.2rem;
+            }
+
+            .hidden{
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <dive class="section">
+            <div class="header">
+                <h1>Guess The Word</h1>
+            </div>
+
+            <div class="area">
+                <h2 class="msg1"></h2>
+                <h3 class="msg2"></h3>
+                <input type="text" class="hidden">
+                <button class="btn">START</button> 
+            </div>
+        </div>
+
+        <script>
+            const msg1 = document.querySelector('.msg1');
+            const msg2 = document.querySelector('.msg2');
+            const guess = document.querySelector('input');
+            const btn = document.querySelector('.btn');
+            let play = false;
+            let newWord = "";
+            let randWord = "";
+            let wordList = ["python", "java", "c++", "javascript", "morning", "mountain", "demo", "soul", "model", "done"];
+
+
+            const createNewWord = () => {
+                let ranNum = Math.floor(Math.random()*wordList.length);
+                let newWord = wordList[ranNum];
+                return newWord;
+             }
+
+            const scarmble = (arr) => {
+                for (let i=arr.length-1; i>=0; i--){
+                    let temp = arr[i];
+                    let j = Math.floor(Math.random()*(i+1));
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+                return arr;
+            }
+            btn.addEventListener('click', function(){
+                if(!play){
+                    play = true;
+                    btn.innerHTML = "Guess";
+                    guess.classList.toggle('hidden');
+                    newWord = createNewWord();
+                    randWord = scarmble(newWord.split("")).join(" ");
+                    msg1.innerHTML = `Guess the word`;
+                    msg2.innerHTML = `${randWord}`;
+                }else{
+                    let tempWord = guess.value;
+                    if(tempWord === newWord){
+                        play = false;
+                        msg1.innerHTML = "Correct!";
+                        msg2.innerHTML = tempWord;
+                        btn.innerHTML = "Start Again";
+                        guess.classList.toggle('hidden');
+                        guess.value = "";
+                    }else{
+                        msg1.innerHTML = "Wrong guess! Try again..";
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
